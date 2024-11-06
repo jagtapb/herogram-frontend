@@ -53,7 +53,7 @@ function Dashboard() {
 
   const fetchFiles = async () => {
     try {
-      const response = await fetch('http://localhost:8000/api/files', {
+      const response = await fetch('http://207.154.218.245:8000/api/files', {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`, // Include token in the header for authentication
@@ -83,7 +83,7 @@ function Dashboard() {
 
     try {
       // Replace with your API endpoint for file upload
-      const response = await fetch('http://localhost:8000/api/upload', {
+      const response = await fetch('http://207.154.218.245:8000/api/upload', {
         method: 'POST',
         body: formData,
         headers: {
