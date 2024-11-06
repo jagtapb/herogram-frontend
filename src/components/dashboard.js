@@ -158,7 +158,7 @@ function Dashboard() {
        <div>
         <input
           type="file"
-          accept=".png, .jpeg, .pdf"
+          accept=".png, .jpeg, .jpg, .pdf"
           onChange={handleFileChange}
         />
         <button onClick={handleUpload}>Upload</button>
@@ -174,7 +174,7 @@ function Dashboard() {
           <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
             {uploadedFiles.map((file, index) => (
               <div key={index} style={{ textAlign: 'center', width: '100px', marginRight: '30px' }}>
-                {file.url.endsWith('.png') || file.url.endsWith('.jpeg') ? (
+                {file.url.endsWith('.png') || file.url.endsWith('.jpeg') || file.url.endsWith('.jpg') ? (
                   // Display image preview for PNG and JPEG files
                   <a href={file.url} target="_blank" rel="noopener noreferrer">
                     <img
