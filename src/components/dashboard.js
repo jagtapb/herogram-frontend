@@ -7,6 +7,7 @@ function Dashboard() {
   const [file, setFile] = useState(null);
   const [uploadStatus, setUploadStatus] = useState('');
   const [uploadedFiles, setUploadedFiles] = useState([]);
+  const [dragging, setDragging] = useState(false);
   const navigate = useNavigate();
 
   const logout = () => {
@@ -36,18 +37,16 @@ function Dashboard() {
 
   const handleFileChange = (event) => {
     const selectedFile = event.target.files[0];
-    
-    // Validate file type
-    if (selectedFile) {
-      const fileType = selectedFile.type;
-      const validTypes = ['image/png', 'image/jpeg', 'application/pdf'];
+    handleFile(selectedFile);
+  };
 
-      if (validTypes.includes(fileType)) {
-        setFile(selectedFile);
-        setUploadStatus('');
-      } else {
-        setUploadStatus('Invalid file type. Please upload PNG, JPEG, or PDF.');
-      }
+  const handleFile = (selectedFile) => {
+    const validTypes = ['image/png', 'image/jpeg', 'application/pdf'];
+    if (selectedFile && validTypes.includes(selectedFile.type)) {
+      setFile(selectedFile);
+      setUploadStatus('');
+    } else {
+      setUploadStatus('Invalid file type. Please upload PNG, JPEG, or PDF.');
     }
   };
 
@@ -70,6 +69,25 @@ function Dashboard() {
       console.error('Error fetching files:', error);
     }
   };
+
+  // Drag-and-Drop Handlers
+  const handleDragOver = (event) => {
+    event.preventDefault();
+    setDragging(true);
+  };
+
+  const handleDragLeave = () => {
+    setDragging(false);
+  };
+
+  const handleDrop = (event) => {
+    event.preventDefault();
+    setDragging(false);
+
+    const droppedFile = event.dataTransfer.files[0];
+    handleFile(droppedFile);
+  };
+
 
   const handleUpload = async () => {
     if (!file) {
@@ -120,6 +138,23 @@ function Dashboard() {
         <p>Loading user data...</p>
       )}
 
+      {/* Drag-and-Drop Area */}
+      <div
+        onDragOver={handleDragOver}
+        onDragLeave={handleDragLeave}
+        onDrop={handleDrop}
+        style={{
+          border: dragging ? '2px dashed #3f51b5' : '2px dashed #cccccc',
+          padding: '20px',
+          borderRadius: '5px',
+          marginBottom: '20px',
+          textAlign: 'center',
+          color: dragging ? '#3f51b5' : '#999999',
+        }}
+      >
+        {dragging ? "Drop file here..." : "Drag and drop a file, or click to select"}
+      </div>
+
        <div>
         <input
           type="file"
@@ -131,23 +166,7 @@ function Dashboard() {
         <br/><br/>
         <br/><br/>
 
-        {/* List of uploaded files
-      <div>
-        <h3>Uploaded Files:</h3>
-        {uploadedFiles.length > 0 ? (
-          <ul>
-            {uploadedFiles.map((file, index) => (
-              <li key={index}>
-                <a href={file.url} target="_blank" rel="noopener noreferrer">
-                  {file.filename}
-                </a>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p>No files uploaded yet.</p>
-        )}
-      </div> */}
+        
       {/* Display Thumbnails of Uploaded Files */}
       <div>
         <h3>Uploaded Files:</h3>
