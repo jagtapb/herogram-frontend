@@ -131,7 +131,7 @@ function Dashboard() {
         <br/><br/>
         <br/><br/>
 
-        {/* List of uploaded files */}
+        {/* List of uploaded files
       <div>
         <h3>Uploaded Files:</h3>
         {uploadedFiles.length > 0 ? (
@@ -144,6 +144,40 @@ function Dashboard() {
               </li>
             ))}
           </ul>
+        ) : (
+          <p>No files uploaded yet.</p>
+        )}
+      </div> */}
+      {/* Display Thumbnails of Uploaded Files */}
+      <div>
+        <h3>Uploaded Files:</h3>
+        {uploadedFiles.length > 0 ? (
+          <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+            {uploadedFiles.map((file, index) => (
+              <div key={index} style={{ textAlign: 'center', width: '100px', marginRight: '30px' }}>
+                {file.url.endsWith('.png') || file.url.endsWith('.jpeg') ? (
+                  // Display image preview for PNG and JPEG files
+                  <a href={file.url} target="_blank" rel="noopener noreferrer">
+                    <img
+                        src={file.url}
+                        alt={file.filename}
+                        style={{ width: '100%', height: 'auto', borderRadius: '5px' }}
+                    />
+                  </a>
+                ) : (
+                  // Display PDF icon for PDF files
+                  <a href={file.url} target="_blank" rel="noopener noreferrer">
+                    <img
+                      src={`${process.env.PUBLIC_URL}/pdf.png`}
+                      alt="PDF Icon"
+                      style={{ width: '100%', height: 'auto' }}
+                    />
+                  </a>
+                )}
+                <p style={{ fontSize: '10px' }}>{file.filename}</p>
+              </div>
+            ))}
+          </div>
         ) : (
           <p>No files uploaded yet.</p>
         )}
